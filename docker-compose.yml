@@ -1,0 +1,14 @@
+services:
+  server:
+    build: ./server
+    container_name: retirement-planner-api
+    ports:
+      - "4000:4000"
+
+  client:
+    build: ./client
+    container_name: retirement-planner-ui
+    ports:
+      - "8080:80"
+    depends_on:
+      - server

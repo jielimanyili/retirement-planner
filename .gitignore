@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+.angular/
+server/dist/
+
+# Env
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Test output
+coverage/
+playwright-report/
+test-results/

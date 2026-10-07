@@ -1,0 +1,120 @@
+<div class="planner">
+  <header class="hero">
+    <h1>Retirement Planner</h1>
+    <p>Project your savings growth and see whether you're on track for the retirement income you want.</p>
+  </header>
+
+  <div class="layout">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card form" novalidate>
+      <h2>Your plan</h2>
+
+      <label class="field">
+        <span>Current age</span>
+        <input type="number" formControlName="currentAge" />
+      </label>
+      <label class="field">
+        <span>Retirement age</span>
+        <input type="number" formControlName="retirementAge" />
+      </label>
+      <label class="field">
+        <span>Current savings ($)</span>
+        <input type="number" formControlName="currentSavings" />
+      </label>
+      <label class="field">
+        <span>Monthly contribution ($)</span>
+        <input type="number" formControlName="monthlyContribution" />
+      </label>
+      <label class="field">
+        <span>Expected annual return (%)</span>
+        <input type="number" step="0.1" formControlName="annualReturnPct" />
+      </label>
+      <label class="field">
+        <span>Desired annual income in retirement ($, optional)</span>
+        <input type="number" formControlName="desiredAnnualIncome" />
+      </label>
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Calculating…' : 'Calculate projection' }}
+      </button>
+    </form>
+
+    <section class="results">
+      @if (error()) {
+        <div class="alert error">{{ error() }}</div>
+      }
+
+      @if (result(); as r) {
+        <div class="card">
+          <h2>Your projection</h2>
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="label">Final balance at {{ r.years[r.years.length - 1]?.age }}</span>
+              <span class="value">{{ r.finalBalance | currency }}</span>
+            </div>
+            <div class="stat">
+              <span class="label">Sustainable annual income (4% rule)</span>
+              <span class="value">{{ r.sustainableAnnualIncome | currency }}</span>
+            </div>
+            <div class="stat">
+              <span class="label">Total contributions</span>
+              <span class="value">{{ r.totalContributions | currency }}</span>
+            </div>
+            <div class="stat">
+              <span class="label">Total growth</span>
+              <span class="value">{{ r.totalGrowth | currency }}</span>
+            </div>
+          </div>
+
+          @if (r.onTrack !== null) {
+            <div class="track" [class.on-track]="r.onTrack" [class.off-track]="!r.onTrack">
+              @if (r.onTrack) {
+                ✅ On track — projected income covers your {{ r.desiredAnnualIncome | currency }} goal.
+              } @else {
+                ⚠️ Shortfall of {{ r.shortfall | currency }} / year vs. your {{ r.desiredAnnualIncome | currency }} goal.
+              }
+            </div>
+          }
+        </div>
+
+        <div class="card">
+          <h2>Growth over time</h2>
+          <svg
+            viewBox="0 0 640 240"
+            preserveAspectRatio="none"
+            class="chart"
+            role="img"
+            aria-label="Projected balance growth over time"
+          >
+            <polyline [attr.points]="chartPoints()" class="line" />
+          </svg>
+          <div class="axis">
+            <span>Age {{ r.years[0]?.age }}</span>
+            <span>Age {{ r.years[r.years.length - 1]?.age }}</span>
+          </div>
+        </div>
+
+        <details class="card">
+          <summary>Year-by-year detail</summary>
+          <table>
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Age</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of r.years; track row.year) {
+                <tr>
+                  <td>{{ row.year }}</td>
+                  <td>{{ row.age }}</td>
+                  <td>{{ row.balance | currency }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </details>
+      }
+    </section>
+  </div>
+</div>
