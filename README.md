@@ -32,6 +32,20 @@ flowchart LR
 Full architecture document (system context, containers, request flow, API contract, deployment):
 **[docs/architecture.md](docs/architecture.md)** · decisions: **[docs/adr/0001-stack-and-architecture.md](docs/adr/0001-stack-and-architecture.md)**
 
+## Project docs
+
+| Doc | Purpose |
+|---|---|
+| [docs/architecture.md](docs/architecture.md) | System shape, containers, request flow, API contract, deployment |
+| [docs/adr/](docs/adr/) | Decision log — why we chose what we chose |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Now / Next / Later |
+| [docs/PHASES.md](docs/PHASES.md) | Work breakdown + status |
+| [AGENTS.md](AGENTS.md) | Instructions for AI coding agents |
+| [docs/ai-assisted-development.md](docs/ai-assisted-development.md) | How we work with AI + review gates |
+| [docs/style-guide.md](docs/style-guide.md) | Prose conventions |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute + document changes |
+| [CHANGELOG.md](CHANGELOG.md) | Release history |
+
 ## Project structure
 
 ```
